@@ -1,6 +1,8 @@
 var Keys = require('./keys.js');
 var app = process.argv[2];
 var appVar = process.argv[3];
+var fs = require("fs");
+var outputText = "";
 
 switch (app){
 	case "my-tweets":
@@ -43,16 +45,27 @@ function spotifyThisSong(song){
 			else
 				song = data.tracks.items[0];
 
-				console.log("/n--------- Spotify -----------/n");
-				console.log("Artist: " + song.artists[0].name);
-				console.log("Name: " + song.name);
-				console.log("Link: " + song.preview_url);
-				console.log("Album Name: " + song.album.name);
-				console.log("/n-----------------------------/n");
+				outputText +="\n--------- Spotify -----------\n";
+				outputText +="Artist: " + song.artists[0].name + "\n";
+				outputText +="Name: " + song.name + "\n";
+				outputText +="Link: " + song.preview_url + "\n";
+				outputText +="Album Name: " + song.album.name + "\n";
+				outputText +="\n-----------------------------\n";
 		}
 		else {
-			return console.log('Error occurred: ' + err);
+			outputText = "Error occurred: " + err;
   	}
+
+		console.log(outputText);
+		fs.appendFile("log.txt", outputText, function(err) {
+
+		  // If the code experiences any errors it will log the error to the console.
+		  if (err) {
+		    return console.log(err);
+		  }
+
+		});
+
 	});
 }
 
@@ -96,57 +109,69 @@ function movieThis(aMovie){
 		else {
 	  	var movie = JSON.parse(body);
 	  	if (movie.Title != null){
-				console.log('======= OMDB ==================');	  	
-			  console.log('Title: ', movie.Title);
-				console.log('Year: ', movie.Year);
+	  		outputText = "======= OMDB ==================\n" + 	  	
+			  							"Title: " +  movie.Title + "\n" +
+											"Year: " +  movie.Year + "\n";
 
 				if (movie.Ratings[0] != null)
-					console.log('IMDB Rating: ', movie.Ratings[0].Value);
+					outputText += "IMDB Rating: "+ movie.Ratings[0].Value + "\n";
 				if (movie.Ratings[1] != null)		
-					console.log('Rotten Tomatoes Rating: ', movie.Ratings[1].Value);
+					outputText += "Rotten Tomatoes Rating: "+ movie.Ratings[1].Value + "\n";
 			
-				console.log('Country: ', movie.Country);
-		 		console.log('Language: ', movie.Language);
-				console.log('Plot: ', movie.Plot);
-				console.log('Actors: ', movie.Actors);		
-				console.log('=================================');
-			} else
-				console.log ("movie not found");
+				outputText += "Country: " +  movie.Country + "\n";
+		 		outputText += "Language: " +  movie.Language + "\n";
+				outputText += "Plot: " +  movie.Plot + "\n";
+				outputText += "Actors: " +  movie.Actors + "\n";		
+				outputText += "=================================";
+			} else {
+				outputText = "movie not found";
+			}
+
+			console.log(outputText);
+			fs.appendFile("log.txt", outputText, function(err) {
+
+			  // If the code experiences any errors it will log the error to the console.
+			  if (err) {
+			    return console.log(err);
+			  }
+
+			});			
 		}
 	});
 }
 
 function doWhatItSays(){
 
-var fs = require("fs");
+	var fs = require("fs");
 
-fs.readFile("random.txt", "utf8", function(error, data) {
-  // If the code experiences any errors it will log the error to the console.
-  if (error) {
-    return console.log(error);
-  }
+	fs.readFile("random.txt", "utf8", function(error, data) {
+	  // If the code experiences any errors it will log the error to the console.
+	  if (error) {
+	    return console.log(error);
+	  }
 
-  var dataArr = data.split(" ");
+	  var dataArr = data.split(" ");
 
-	var app = dataArr[0];
-	var appVar = dataArr[1];
+		var app = dataArr[0];
+		var appVar = dataArr[1];
 
-	switch (app){
-		case "my-tweets":
-			myTweets();
-			break;
-		case "spotify-this-song":
-			spotifyThisSong(appVar);
-			break;
-		case "movie-this":
-			if (appVar){
-				movieThis(appVar);
-			} else
-				movieThis("Mr. Nobody");
-			break;
-		default:
-			console.log(app + " not found.");
-	}  
-})
-
+		switch (app){
+			case "my-tweets":
+				myTweets();
+				break;
+			case "spotify-this-song":
+				spotifyThisSong(appVar);
+				break;
+			case "movie-this":
+				if (appVar){
+					movieThis(appVar);
+				} else
+					movieThis("Mr. Nobody");
+				break;
+			default:{
+				outputText = app + " not found.";
+			}
+		}  
+	})
 }
+

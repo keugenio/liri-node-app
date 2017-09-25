@@ -1,0 +1,18 @@
+/n--------- Spotify -----------/nArtist: Night Ranger/nName: Sister Christian/nLink: null/nAlbum Name: Boogie Nights / Music From The Original Motion Picture/n/n-----------------------------/n
+--------- Spotify -----------
+Artist: Night Ranger
+Name: Sister Christian
+Link: null
+Album Name: Boogie Nights / Music From The Original Motion Picture
+
+-----------------------------
+======= OMDB ==================
+Title: Boogie Nights
+Year: 1997
+IMDB Rating: 7.9/10
+Rotten Tomatoes Rating: 93%
+Country: USA
+Language: English
+Plot: The story of a young man's adventures in the Californian pornography industry of the late 1970s and early 1980s.
+Actors: Luis Guzmán, Burt Reynolds, Julianne Moore, Rico Bueno
+=================================movie not found
