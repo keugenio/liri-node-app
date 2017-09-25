@@ -70,26 +70,28 @@ function spotifyThisSong(song){
 }
 
 function myTweets(){
-	var Twitter = require('twitter');
-	 
-	var client = new Twitter({
-	  consumer_key: Keys.twitterKeys.consumer_key,
-	  consumer_secret: Keys.twitterKeys.consumer_secret,
-	  access_token_key: Keys.twitterKeys.access_token_key,
-	  access_token_secret: Keys.twitterKeys.access_token_key
-	});
-	 
-	var params = {screen_name: 'nodejs'};
+	var Twit = require('twit');
 
-	client.stream('statuses/filter', {track: 'twitter'},  function(stream) {
-	  stream.on('data', function(tweet) {
-	    console.log(tweet.text);
-	  });
+var config = require('./twitterKeys')	 
+var T = new Twit(config);
+	 
+T.get('search/tweets', { q: 'Pumpkin Pie since:2016-01-01', count: 20 }, function(err, data, response) {
+  for (var i = 0; i < data.statuses.length; i++) {
+  	outputText += "\ntweet "+ i + "=====================\n"
+  	outputText += data.statuses[i].created_at + "\n";
+  	outputText += data.statuses[i].text + "\n";
+  }
+	console.log(outputText);
+	fs.appendFile("log.txt", outputText, function(err) {
 
-	  stream.on('error', function(error) {
-	    console.log(error);
-	  });
-	});
+	  // If the code experiences any errors it will log the error to the console.
+	  if (err) {
+	    return console.log(err);
+	  }
+
+	}); 
+})
+
 }
 
 function movieThis(aMovie){
