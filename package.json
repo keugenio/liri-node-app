@@ -1,0 +1,28 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "a liri app run on node.js",
+  "main": "ess.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keugenio/liri-node-app.git"
+  },
+  "keywords": [
+    "liri",
+    "node"
+  ],
+  "author": "Kui Eugenio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/keugenio/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/keugenio/liri-node-app#readme",
+  "dependencies": {
+    "request": "^2.82.0",
+    "spotify": "^0.3.0",
+    "twit": "^2.2.9"
+  }
+}

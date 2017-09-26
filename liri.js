@@ -1,30 +1,36 @@
-var Keys = require('./keys.js');
-var app = process.argv[2];
-var appVar = process.argv[3];
-var fs = require("fs");
-var outputText = "";
+// *********************************************************
+	var Keys = require('./keys.js');
+	var app = process.argv[2];
+	var appVar = process.argv[3];
+	var fs = require("fs");
+	var outputText = "";
 
-switch (app){
-	case "my-tweets":
-		myTweets();
-		break;
-	case "spotify-this-song":
-		spotifyThisSong(appVar);
-		break;
-	case "movie-this":
-		if (appVar){
-			movieThis(appVar);
-		} else
-			movieThis("Mr. Nobody");
-		break;
-	case "do-what-it-says":
-		doWhatItSays(appVar);
-		break;
-	default:
-		console.log("command not found. try again");
-}
+	switch (app){
+		case "my-tweets":
+			myTweets();
+			break;
+		case "spotify-this-song":
+			spotifyThisSong(appVar);
+			break;
+		case "movie-this":
+			if (appVar){
+				movieThis(appVar);
+				console.log(outputText);
+			} else{
+				movieThis("Mr. Nobody");
+			}
+			break;
+		case "do-what-it-says":
+			doWhatItSays(appVar);
+			break;
+		default:
+			outputText = "command not found. try again";
+			print(outputText);
+			break;
+	};
 
 
+// *********************************************************
 function spotifyThisSong(song){
 	var Spotify = require('node-spotify-api');
 	 
@@ -55,42 +61,24 @@ function spotifyThisSong(song){
 		else {
 			outputText = "Error occurred: " + err;
   	}
-
-		console.log(outputText);
-		fs.appendFile("log.txt", outputText, function(err) {
-
-		  // If the code experiences any errors it will log the error to the console.
-		  if (err) {
-		    return console.log(err);
-		  }
-
-		});
-
+		print(outputText);  	
 	});
 }
 
 function myTweets(){
 	var Twit = require('twit');
 
-var config = require('./twitterKeys')	 
-var T = new Twit(config);
-	 
-T.get('search/tweets', { q: 'Pumpkin Pie since:2016-01-01', count: 20 }, function(err, data, response) {
-  for (var i = 0; i < data.statuses.length; i++) {
-  	outputText += "\ntweet "+ i + "=====================\n"
-  	outputText += data.statuses[i].created_at + "\n";
-  	outputText += data.statuses[i].text + "\n";
-  }
-	console.log(outputText);
-	fs.appendFile("log.txt", outputText, function(err) {
-
-	  // If the code experiences any errors it will log the error to the console.
-	  if (err) {
-	    return console.log(err);
+	var config = require('./twitterKeys')	 
+	var T = new Twit(config);
+		 
+	T.get('search/tweets', { q: 'Pumpkin Pie since:2016-01-01', count: 20 }, function(err, data, response) {
+	  for (var i = 0; i < data.statuses.length; i++) {
+	  	outputText += "\ntweet "+ i + "=====================\n"
+	  	outputText += data.statuses[i].created_at + "\n";
+	  	outputText += data.statuses[i].text + "\n";
 	  }
-
-	}); 
-})
+		print(outputText);	  
+	});
 
 }
 
@@ -128,16 +116,7 @@ function movieThis(aMovie){
 			} else {
 				outputText = "movie not found";
 			}
-
-			console.log(outputText);
-			fs.appendFile("log.txt", outputText, function(err) {
-
-			  // If the code experiences any errors it will log the error to the console.
-			  if (err) {
-			    return console.log(err);
-			  }
-
-			});			
+			print(outputText);
 		}
 	});
 }
@@ -172,8 +151,20 @@ function doWhatItSays(){
 				break;
 			default:{
 				outputText = app + " not found.";
+				print(outputText);
 			}
 		}  
 	})
 }
 
+function print(outputText){
+	console.log(outputText);
+	fs.appendFile("log.txt", outputText, function(err) {
+
+	  // If the code experiences any errors it will log the error to the console.
+	  if (err) {
+	    return console.log(err);
+	  }
+
+	});
+}
